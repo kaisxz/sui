@@ -502,7 +502,7 @@ mod tests {
             .output()
             .unwrap();
         Command::new("git")
-            .args(["commit", "-m", "Initial commit"])
+            .args(["commit", "-m", "Initial commit", "."])
             .current_dir(&root_path)
             .output()
             .unwrap();
@@ -520,7 +520,7 @@ mod tests {
             .output()
             .unwrap();
         Command::new("git")
-            .args(["commit", "-m", "Add dependencies"])
+            .args(["commit", "-m", "Add dependencies", "."])
             .current_dir(&root_path)
             .output()
             .unwrap();
@@ -546,6 +546,10 @@ mod tests {
         let (temp_folder, fs_repo, first_sha, second_sha) = setup_test_move_project();
         let temp_dir = setup_temp_dir();
         let fs_repo = fs_repo.to_str().unwrap();
+        println!("temp_folder: {:?}", temp_folder);
+        println!("fs_repo: {:?}", fs_repo);
+        println!("first_sha: {:?}", first_sha);
+        println!("second_sha: {:?}", second_sha);
 
         // Pass in a branch name
         let git_repo = GitRepo {
