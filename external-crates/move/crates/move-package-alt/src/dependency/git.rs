@@ -136,6 +136,7 @@ impl GitRepo {
     /// Ensures that the repo is checked out at the specified sha.
     pub fn fetch(&self) -> PackageResult<PathBuf> {
         let sha = self.find_sha()?;
+        println!("SHA: {sha}");
 
         if !check_is_commit_sha(&sha) {
             return Err(PackageError::Git(GitError::invalid_sha(
@@ -310,12 +311,14 @@ impl GitRepo {
 
         // we have a branch or tag
         let sha = if let Some(r) = self.rev.as_ref() {
+            println!("Fetching SHA for branch/tag: {r}");
             // git ls-remote https://github.com/user/repo.git refs/heads/main
             let cmd = self.run_git_cmd_with_args(
                 &["ls-remote", &self.repo_url, &format!("refs/heads/{r}")],
                 None,
             )?;
             let stdout = String::from_utf8(cmd.stdout)?;
+            println!("stdout: {stdout}");
             stdout
                 .split_whitespace()
                 .next()
