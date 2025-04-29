@@ -203,6 +203,31 @@ public fun destroy_zero<T>(c: Coin<T>) {
     balance.destroy_zero()
 }
 
+public fun create_currency_v2<T: drop>(
+    witness: T,
+    decimals: u8,
+    symbol: vector<u8>,
+    name: vector<u8>,
+    description: vector<u8>,
+    icon_url: Option<Url>,
+    ctx: &mut TxContext,
+): (TreasuryCap<T>, CoinMetadata<T>) {
+    (
+        TreasuryCap {
+            id: object::new(ctx),
+            total_supply: balance::create_supply(witness),
+        },
+        CoinMetadata {
+            id: object::new(ctx),
+            decimals,
+            name: string::utf8(name),
+            symbol: ascii::string(symbol),
+            description: string::utf8(description),
+            icon_url,
+        },
+    )
+}
+
 // === Registering new coin types and managing the coin supply ===
 
 /// Create a new currency type `T` as and return the `TreasuryCap` for
